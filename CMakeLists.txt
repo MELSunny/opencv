@@ -420,6 +420,12 @@ OCV_OPTION(WITH_VA_INTEL "Include Intel VA-API/OpenCL support" (X86_64 OR X86)
 OCV_OPTION(WITH_MFX "Include Intel Media SDK support" OFF
   VISIBLE_IF (UNIX AND NOT ANDROID) OR (WIN32 AND NOT WINRT AND NOT MINGW)
   VERIFY HAVE_MFX)
+
+OCV_OPTION(WITH_DRM "Include DRM support" OFF
+  VISIBLE_IF (UNIX AND NOT ANDROID)
+  VERIFY HAVE_DRM
+)
+
 OCV_OPTION(WITH_GDAL "Include GDAL Support" OFF
   VISIBLE_IF NOT ANDROID AND NOT IOS AND NOT XROS AND NOT WINRT
   VERIFY HAVE_GDAL)
@@ -1773,6 +1779,17 @@ endif()
 
 if(WITH_VA OR HAVE_VA)
   status("    VA:"            HAVE_VA          THEN "YES" ELSE NO)
+endif()
+
+if(WITH_DRM OR HAVE_DRM)
+  if(HAVE_DRM)
+    if(DRM_LIBRARIES)
+      set(__drm_details " (${DRM_LIBRARIES})")
+    else()
+      set(__drm_details " (unknown)")
+    endif()
+  endif()
+  status("    DRM:" HAVE_DRM THEN "YES${__drm_details}" ELSE NO)
 endif()
 
 if(WITH_LAPACK OR HAVE_LAPACK)
